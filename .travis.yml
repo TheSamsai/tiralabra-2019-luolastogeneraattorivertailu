@@ -2,7 +2,6 @@ language: java
 install: true
 
 script:
-  - cd Tiralabra-2019-LuolastoGeneraattoriVertailu
   - ./gradlew check
   - ./gradlew jacocoTestReport
 after_success:
