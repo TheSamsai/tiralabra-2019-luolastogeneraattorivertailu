@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="bspgenerator.BinaryTreeTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2019-01-24T16:05:42" hostname="resurrected-rohjo" time="0.01">
+  <properties/>
+  <testcase name="insertRightWorks" classname="bspgenerator.BinaryTreeTest" time="0.002"/>
+  <testcase name="horizontalPartitioningReducesArea" classname="bspgenerator.BinaryTreeTest" time="0.0"/>
+  <testcase name="verticalPartitioningReducesArea" classname="bspgenerator.BinaryTreeTest" time="0.006"/>
+  <testcase name="partitioningCreatesAQuarter" classname="bspgenerator.BinaryTreeTest" time="0.0"/>
+  <testcase name="insertLeftWorks" classname="bspgenerator.BinaryTreeTest" time="0.0"/>
+  <system-out><![CDATA[
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
