@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bspgenerator;
+package domain;
 
 /**
  *
@@ -23,5 +23,9 @@ public class Room {
         this.y = y;
         this.w = w;
         this.h = h;
+    }
+    
+    public int area() {
+        return w * h;
     }
 }

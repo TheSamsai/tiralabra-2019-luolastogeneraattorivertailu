@@ -5,6 +5,7 @@
  */
 package bspgenerator;
 
+import domain.Room;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -78,7 +79,7 @@ public class BinaryTreeTest {
     }
     
     @Test
-    public void partitioningCreatesAQuarter() {
+    public void doublePartitioningCreatesAQuarter() {
         tree.partitionHorizontal(tree.room.w / 2);
         tree.left.partitionVertical(tree.left.room.h / 2);
         

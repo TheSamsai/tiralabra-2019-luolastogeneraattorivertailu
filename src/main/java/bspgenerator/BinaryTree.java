@@ -5,6 +5,8 @@
  */
 package bspgenerator;
 
+import domain.Room;
+
 /**
  *
  * @author sami
@@ -72,7 +74,7 @@ public class BinaryTree {
      */
     public void partitionVertical(int y) {
         insertLeft(new BinaryTree(new Room(room.x, room.y, room.w, room.h - y)));
-        insertRight(new BinaryTree(new Room(room.x, y, room.w, room.h - y)));
+        insertRight(new BinaryTree(new Room(room.x, room.y + y, room.w, room.h - y)));
     }
     
     /**
@@ -86,6 +88,6 @@ public class BinaryTree {
      */
     public void partitionHorizontal(int x) {
         insertLeft(new BinaryTree(new Room(room.x, room.y, room.w - x, room.h)));
-        insertRight(new BinaryTree(new Room(x, room.y, room.w - x, room.h)));
+        insertRight(new BinaryTree(new Room(room.x + x, room.y, room.w - x, room.h)));
     }
 }
