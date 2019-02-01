@@ -40,11 +40,13 @@ public class BSPGenerator {
         
         System.out.println("Generating BSP tree...");
         
-        generateTree(dungeonTree);
+        generateTree(dungeonTree, 25, 0.5, 5);
         
         System.out.println("Carving rooms...");
         
         carveRooms(dungeonTree, dungeon);
+        
+        carveHallways(dungeonTree, dungeon);
         
         return dungeon;
     }
@@ -61,29 +63,41 @@ public class BSPGenerator {
      * Recursively partitions the tree until the tree cannot be partitioned further.
      * @param tree The binary tree that is used to store the sub-dungeons.
      */
-    private void generateTree(BinaryTree tree) {
+    private void generateTree(BinaryTree tree, int minArea, double balance, int iterations) {
+        if (iterations == 0) {
+            return;
+        }
+        
         int heightMiddle = tree.getRoom().h / 2;
         int widthMiddle = tree.getRoom().w / 2;
         
-        if (tree.getRoom().area() > 15) {
-            boolean split = false;
-            
-            if (rng.nextBoolean() && heightMiddle > 5) {
-                System.out.println("Vertical split");
-                tree.partitionVertical(heightMiddle);
-                split = true;
-            } else if (widthMiddle > 5) {
-                System.out.println("Horizontal split");
-                tree.partitionHorizontal(widthMiddle);
-                split = true;
-            }
-            
-            if (split) {
-                generateTree(tree.getLeft());
+        double newBalance = balance;
         
-                generateTree(tree.getRight());
-            }
+        if (rng.nextDouble() > balance) {
+            System.out.println("Vertical split");
+            tree.partitionVertical(heightMiddle);
+            newBalance += 0.20;
+        } else {
+            System.out.println("Horizontal split");
+            tree.partitionHorizontal(widthMiddle);
+            newBalance -= 0.20;
         }
+        
+        if (tree.getLeft().getRoom().area() < minArea || tree.getRight().getRoom().area() < minArea) {
+            tree.insertLeft(null);
+            tree.insertRight(null);
+            return;
+        }
+        
+        if (heightMiddle > widthMiddle) {
+            newBalance += 0.10;
+        } else if (widthMiddle > heightMiddle) {
+            newBalance -= 0.10;
+        }
+        
+        generateTree(tree.getLeft(), minArea, newBalance, iterations - 1);
+        
+        generateTree(tree.getRight(), minArea, newBalance, iterations - 1);
     }
     
     /**
@@ -95,7 +109,7 @@ public class BSPGenerator {
         if (tree.getLeft() == null && tree.getRight() == null) {
             Room room = tree.getRoom();
             
-            double size = (rng.nextDouble() + 0.50) % 1.0;
+            double size = (rng.nextDouble() + 0.80) % 1.0;
             
             room.x += room.w - (room.w * size);
             room.y += room.h - (room.h * size);
@@ -110,5 +124,28 @@ public class BSPGenerator {
         
         carveRooms(tree.getLeft(), dungeon);
         carveRooms(tree.getRight(), dungeon);
+    }
+    
+    public Room findRoom(BinaryTree tree) {
+        if (tree.getLeft() == null && tree.getRight() == null) {
+            return tree.getRoom();
+        }
+        
+        if (rng.nextBoolean()) {
+            return findRoom(tree.getLeft());
+        } else {
+            return findRoom(tree.getRight());
+        }
+    }
+    
+    private void carveHallways(BinaryTree tree, Dungeon dungeon) {
+        if (tree.getLeft() == null || tree.getRight() == null) {
+            return;
+        }
+        
+        carveHallways(tree.getLeft(), dungeon);
+        carveHallways(tree.getRight(), dungeon);
+        
+        dungeon.carveTunnel(findRoom(tree.getLeft()).center(), findRoom(tree.getRight()).center());
     }
 }

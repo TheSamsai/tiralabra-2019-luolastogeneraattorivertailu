@@ -45,6 +45,19 @@ Erityisesti BFS- ja DFS-hakujen käytössä tulee kyetä selvittämään onko jo
 tarjoaa tähän nopean ratkaisun, jonka lisäysoperaatio ja hakuoperaatio ovat keskimäärin O(1) operaatioita. Joukko-opillisia
 operaatioita, kuten unionia ja erotusta ei näiden algoritmien kohdalla kuitenkaan tarvita.
 
+#### ArrayList ([Dynamic array](https://en.wikipedia.org/wiki/Dynamic_array))
+
+Yleiseen tietojen tallentamiseen ja erityisesti tietojen palauttamiseen metodeista voi olla tarvetta yleiskäyttöiselle
+ArrayList-toteutukselle. Koska tietorakenne on melko helppo toteuttaa suhteellisen hyvällä tehokkuudelle, otan
+myös tämän toteutettavaksi.
+
+#### Jono ([Queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type)))
+
+BFS ja mahdolliset DFS algoritmit ainakin tarvitsevat toimiakseen nopean FIFO-jonon, jonka alkupäästä on helppo
+poimia objekteja. Tähän tarkoitukseen sopii vaikka kaksoislinkitetty lista, jonka alkuun ja loppuun on helppo
+pääsy. Aluksi ajattelin toteuttaa jonot ArrayListina, mutta objektin poisto listan alusta on O(n) operaatio, joka
+on yksinkertaisesti liian hidas.
+
 #### Pseudosatunnaislukugeneraattori
 
 Jotta generaattorit eivät aina loisi tismalleen samanlaisia karttoja, tarvitaan algoritmeille myös satunnaislukugeneraattori,

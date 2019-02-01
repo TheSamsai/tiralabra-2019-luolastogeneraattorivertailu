@@ -5,6 +5,8 @@
  */
 package domain;
 
+import util.Pair;
+
 /**
  *
  * @author sami
@@ -23,6 +25,17 @@ public class Room {
         this.y = y;
         this.w = w;
         this.h = h;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Pair<Integer, Integer> center() {
+        int a = x + (w / 2);
+        int b = y + (h / 2);
+        
+        return new Pair(a, b);
     }
     
     public int area() {

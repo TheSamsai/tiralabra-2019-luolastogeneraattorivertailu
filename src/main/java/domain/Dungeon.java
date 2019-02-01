@@ -12,12 +12,14 @@ package domain;
 
 import io.ConsoleIO;
 import io.IO;
+import java.util.ArrayList;
+import util.Pair;
 
 public class Dungeon {
     // Individual tiles of the dungeon. True for a room tile, false for a wall.
-    boolean tiles[][];
-    int x;
-    int y;
+    public boolean tiles[][];
+    public int x;
+    public int y;
     
     // For drawing and testing we supply an I/O object used to print the dungeon
     IO io;
@@ -31,6 +33,35 @@ public class Dungeon {
         this.x = x;
         this.y = y;
         tiles = new boolean[y][x];
+    }
+    
+    public boolean isPassable(int x, int y) {
+        if (x >= 0 && x < this.x && y >= 0 && y < this.y) {
+            return tiles[y][x];
+        }
+        
+        return false;
+    }
+    
+    public ArrayList<Pair<Integer, Integer>> getNeighbours(Pair<Integer, Integer> position) {
+        int x = position.getFirst();
+        int y = position.getSecond();
+        
+        ArrayList<Pair<Integer, Integer>> results = new ArrayList<>();
+        
+        if (isPassable(x, y)) {
+            if (isPassable(x - 1, y)) {
+                results.add(new Pair(x - 1, y));
+            } if (isPassable(x + 1, y)) {
+                results.add(new Pair(x + 1, y));
+            } if (isPassable(x, y - 1)) {
+                results.add(new Pair(x, y -1));
+            } if (isPassable(x, y + 1)) {
+                results.add(new Pair(x, y +1));
+            }
+        }
+        
+        return results;
     }
     
     /**
@@ -58,6 +89,23 @@ public class Dungeon {
             for (int x = room.x; x < (room.x + room.w); x++) {
                 tiles[y][x] = true;
             }
+        }
+    }
+    
+    public void carveTunnel(Pair<Integer, Integer> start, Pair<Integer, Integer> target) {
+        int x = start.getFirst();
+        int y = start.getSecond();
+        
+        tiles[y][x] = true;
+        
+        if (start.getFirst() < target.getFirst()) {
+            carveTunnel(new Pair(x+1, y), target);
+        } else if (x > target.getFirst()) {
+            carveTunnel(new Pair(x-1, y), target);
+        } else if (y < target.getSecond()) {
+            carveTunnel(new Pair(x, y+1), target);
+        } else if (y > target.getSecond()) {
+            carveTunnel(new Pair(x, y-1), target);
         }
     }
 }

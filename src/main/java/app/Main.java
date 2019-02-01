@@ -18,7 +18,7 @@ public class Main {
         System.out.println("Hello, World!");
         BSPGenerator gen = new BSPGenerator();
         
-        Dungeon dungeon = gen.generate(100, 100);
+        Dungeon dungeon = gen.generate(60, 40);
         
         dungeon.print();
     }

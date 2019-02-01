@@ -5,12 +5,17 @@
  */
 package bspgenerator;
 
+import domain.Dungeon;
+import domain.DungeonBFS;
+import domain.Room;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import util.Pair;
 
 /**
  *
@@ -77,6 +82,25 @@ public class BSPGeneratorTest {
         gen.generate(50, 50);
         gen.generate(75, 75);
         gen.generate(100, 100);
+        
+        assert(true);
+    }
+    
+    @Test
+    public void allRoomsAreConnected() {
+        Dungeon dungeon = gen.generate(100, 100);
+        
+        Room room = gen.findRoom(gen.getTree());
+        
+        List<Pair<Integer, Integer>> tiles = DungeonBFS.traverseBFS(dungeon, room.center());
+        
+        for (int y = 0; y < dungeon.y; y++) {
+            for (int x = 0; x < dungeon.x; x++) {
+                if (dungeon.tiles[y][x]) {
+                    assert(tiles.contains(new Pair(x, y)));
+                }
+            }
+        }
         
         assert(true);
     }
