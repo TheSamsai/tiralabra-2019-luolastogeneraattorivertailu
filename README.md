@@ -11,6 +11,10 @@ roguelike-tyylisten pelien luolastogeneraattoria ja vertailla näiden generaatto
 
 [Määrittelydokumentti](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/m%C3%A4%C3%A4rittelydokumentti.md)
 
+[Toteutusdokumentti](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/toteutusdokumentti.md)
+
+[Testausdokumentti](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/testausdokumentti.md)
+
 ## Viikkoraportit
 
 [Viikko 1](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/viikkoraportit/viikkoraportti1.md)
@@ -18,3 +22,5 @@ roguelike-tyylisten pelien luolastogeneraattoria ja vertailla näiden generaatto
 [Viikko 2](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/viikkoraportit/viikkoraportti2.md)
 
 [Viikko 3](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/viikkoraportit/viikkoraportti3.md)
+
+[Viikko 4](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/viikkoraportit/viikkoraportti4.md)
