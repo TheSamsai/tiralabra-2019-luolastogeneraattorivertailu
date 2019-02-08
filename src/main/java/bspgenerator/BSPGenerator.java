@@ -38,11 +38,11 @@ public class BSPGenerator {
         
         dungeonTree = new BinaryTree(new Room(0,0,x,y));
         
-        System.out.println("Generating BSP tree...");
+        //System.out.println("Generating BSP tree...");
         
         generateTree(dungeonTree, 25, 0.5, 5);
         
-        System.out.println("Carving rooms...");
+        //System.out.println("Carving rooms...");
         
         carveRooms(dungeonTree, dungeon);
         
@@ -74,11 +74,9 @@ public class BSPGenerator {
         double newBalance = balance;
         
         if (rng.nextDouble() > balance) {
-            System.out.println("Vertical split");
             tree.partitionVertical(heightMiddle);
             newBalance += 0.20;
         } else {
-            System.out.println("Horizontal split");
             tree.partitionHorizontal(widthMiddle);
             newBalance -= 0.20;
         }

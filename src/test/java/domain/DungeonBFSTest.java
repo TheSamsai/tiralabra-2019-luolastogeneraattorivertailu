@@ -5,13 +5,13 @@
  */
 package domain;
 
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import util.ArrayList;
 import util.Pair;
 
 /**
@@ -50,6 +50,8 @@ public class DungeonBFSTest {
         dungeon.carveRoom(room);
         
         DungeonBFS.traverseBFS(dungeon, room.center());
+        
+        assert(true);
     }
     
     @Test
@@ -59,7 +61,7 @@ public class DungeonBFSTest {
         
         dungeon.carveRoom(room);
         
-        List<Pair<Integer, Integer>> tiles = DungeonBFS.traverseBFS(dungeon, room.center());
+        ArrayList<Pair<Integer, Integer>> tiles = DungeonBFS.traverseBFS(dungeon, room.center());
         
         for (int y = 0; y < dungeon.y; y++) {
             for (int x = 0; x < dungeon.x; x++) {

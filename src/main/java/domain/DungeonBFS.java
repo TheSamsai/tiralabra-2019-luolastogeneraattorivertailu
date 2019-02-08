@@ -5,8 +5,8 @@
  */
 package domain;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
+import util.Queue;
+import util.ArrayList;
 import java.util.HashSet;
 import util.Pair;
 
@@ -18,12 +18,13 @@ public class DungeonBFS {
     public static ArrayList<Pair<Integer, Integer>> traverseBFS(Dungeon dungeon, Pair<Integer, Integer> start) {
         HashSet<Pair<Integer, Integer>> visited = new HashSet<>();
         ArrayList<Pair<Integer, Integer>> result = new ArrayList<>();
-        ArrayDeque<Pair<Integer, Integer>> openSet = new ArrayDeque<>();
+        Queue<Pair<Integer, Integer>> openSet = new Queue<>();
         
-        openSet.add(start);
+        openSet.enqueue(start);
         
         while (!openSet.isEmpty()) {
-            Pair<Integer, Integer> next = openSet.removeFirst();
+            Pair<Integer, Integer> next;
+            next = openSet.dequeue();
             
             int x = next.getFirst();
             int y = next.getSecond();
@@ -31,7 +32,7 @@ public class DungeonBFS {
             for (Pair<Integer, Integer> neighbour : dungeon.getNeighbours(next)) {
                 if (visited.contains(neighbour)) continue;
                 if (!openSet.contains(neighbour)) {
-                    openSet.add(neighbour);
+                    openSet.enqueue(neighbour);
                 }
             }
             

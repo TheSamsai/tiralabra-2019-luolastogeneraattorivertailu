@@ -34,3 +34,7 @@ test {
         logger.lifecycle("Running test: ${descriptor}")
     }
 }
+
+run{
+    standardInput = System.in
+}

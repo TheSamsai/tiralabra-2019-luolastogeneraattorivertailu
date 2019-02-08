@@ -12,7 +12,7 @@ package domain;
 
 import io.ConsoleIO;
 import io.IO;
-import java.util.ArrayList;
+import util.ArrayList;
 import util.Pair;
 
 public class Dungeon {
@@ -49,16 +49,22 @@ public class Dungeon {
         
         ArrayList<Pair<Integer, Integer>> results = new ArrayList<>();
         
-        if (isPassable(x, y)) {
-            if (isPassable(x - 1, y)) {
-                results.add(new Pair(x - 1, y));
-            } if (isPassable(x + 1, y)) {
-                results.add(new Pair(x + 1, y));
-            } if (isPassable(x, y - 1)) {
-                results.add(new Pair(x, y -1));
-            } if (isPassable(x, y + 1)) {
-                results.add(new Pair(x, y +1));
-            }
+        if (isPassable(x - 1, y)) {
+            results.add(new Pair(x - 1, y));
+        } if (isPassable(x + 1, y)) {
+            results.add(new Pair(x + 1, y));
+        } if (isPassable(x, y - 1)) {
+            results.add(new Pair(x, y -1));
+        } if (isPassable(x, y + 1)) {
+            results.add(new Pair(x, y + 1));
+        } if (isPassable(x - 1, y - 1)) {
+            results.add(new Pair(x - 1, y - 1));
+        } if (isPassable(x + 1, y + 1)) {
+            results.add(new Pair(x + 1, y + 1));
+        } if (isPassable(x - 1, y + 1)) {
+            results.add(new Pair(x - 1, y + 1));
+        } if (isPassable(x + 1, y - 1)) {
+            results.add(new Pair(x + 1, y - 1));
         }
         
         return results;

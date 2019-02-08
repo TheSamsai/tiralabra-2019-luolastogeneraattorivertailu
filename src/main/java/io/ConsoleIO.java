@@ -5,12 +5,20 @@
  */
 package io;
 
+import java.util.Scanner;
+
 /**
  *
  * @author sami
  */
 public class ConsoleIO implements IO {
-
+    
+    Scanner scan;
+    
+    public ConsoleIO() {
+        scan = new Scanner(System.in);
+    }
+    
     @Override
     public void print(String string) {
         System.out.print(string);
@@ -23,7 +31,7 @@ public class ConsoleIO implements IO {
 
     @Override
     public String read() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return scan.nextLine();
     }
     
 }

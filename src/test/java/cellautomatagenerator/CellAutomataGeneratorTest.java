@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bspgenerator;
+package cellautomatagenerator;
 
 import domain.Dungeon;
 import domain.DungeonBFS;
 import domain.Room;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,9 +21,9 @@ import util.Pair;
  *
  * @author sami
  */
-public class BSPGeneratorTest {
+public class CellAutomataGeneratorTest {
     
-    public BSPGeneratorTest() {
+    public CellAutomataGeneratorTest() {
     }
     
     @BeforeClass
@@ -35,11 +34,11 @@ public class BSPGeneratorTest {
     public static void tearDownClass() {
     }
     
-    BSPGenerator gen;
+    CellAutomataGenerator gen;
     
     @Before
     public void setUp() {
-        gen = new BSPGenerator();
+        gen = new CellAutomataGenerator();
     }
     
     @After
@@ -49,31 +48,8 @@ public class BSPGeneratorTest {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-    @Test
-    public void generatedDungeonTreeHasTwoLeavesPerBranch() {
-        gen.generate(100, 100);
-        
-        BinaryTree tree = gen.getTree();
-        
-        assert(hasTwoLeavesPerBranch(tree));
-    }
-    
-    public boolean hasTwoLeavesPerBranch(BinaryTree tree) {
-        if (tree == null) {
-            return false;
-        } else if (tree.getLeft() == null && tree.getRight() == null) {
-            return true;
-        }
-        
-        boolean left = hasTwoLeavesPerBranch(tree.getLeft());
-        boolean right = hasTwoLeavesPerBranch(tree.getRight());
-        
-        if (!left || !right) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+    // @Test
+    // public void hello() {}
     
     @Test
     public void generatorCanGenerateAllSizesOfDungeons() {
@@ -91,9 +67,20 @@ public class BSPGeneratorTest {
     public void allRoomsAreConnected() {
         Dungeon dungeon = gen.generate(100, 100);
         
-        Room room = gen.findRoom(gen.getTree());
+        int sX = 0;
+        int sY = 0;
         
-        ArrayList<Pair<Integer, Integer>> tiles = DungeonBFS.traverseBFS(dungeon, room.center());
+        for (int y = 0; y < dungeon.y; y++) {
+            for (int x = 0; x < dungeon.x; x++) {
+                if (dungeon.isPassable(x, y)) {
+                    sX = x;
+                    sY = y;
+                    break;
+                }
+            }
+        }
+        
+        ArrayList<Pair<Integer, Integer>> tiles = DungeonBFS.traverseBFS(dungeon, new Pair(sX, sY));
         
         for (int y = 0; y < dungeon.y; y++) {
             for (int x = 0; x < dungeon.x; x++) {
