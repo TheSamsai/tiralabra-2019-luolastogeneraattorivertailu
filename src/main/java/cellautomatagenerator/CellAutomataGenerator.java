@@ -18,6 +18,10 @@ import util.Pair;
 public class CellAutomataGenerator {
     Random rng;
     
+    public CellAutomataGenerator() {
+        rng = new Random();
+    }
+    
     /**
      * Initialise and populate a dungeon
      * @param x The width of the dungeon
@@ -26,7 +30,6 @@ public class CellAutomataGenerator {
      */
     public Dungeon generate(int x, int y) {
         Dungeon dungeon = new Dungeon(x, y);
-        rng = new Random();
         
         // We fill the dungeon randomly with empty space
         initializeRandom(dungeon, 0.40);
@@ -49,7 +52,7 @@ public class CellAutomataGenerator {
      * @param dungeon The dungeon to be operated upon.
      * @param p The probability that a tile at any given point becomes a floor.
      */
-    private void initializeRandom(Dungeon dungeon, double p) {
+    public void initializeRandom(Dungeon dungeon, double p) {
         for (int y = 1; y < dungeon.y - 1; y++) {
             for (int x = 1; x < dungeon.x - 1; x++) {
                 if (rng.nextDouble() > p) {

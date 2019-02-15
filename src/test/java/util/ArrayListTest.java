@@ -5,6 +5,7 @@
  */
 package util;
 
+import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,10 +31,12 @@ public class ArrayListTest {
     }
     
     ArrayList<Integer> list;
+    java.util.ArrayList<Integer> standardList;
     
     @Before
     public void setUp() {
         list = new ArrayList<Integer>();
+        standardList = new java.util.ArrayList<>();
     }
     
     @After
@@ -88,5 +91,43 @@ public class ArrayListTest {
         }
         
         assert(true);
+    }
+    
+    @Test
+    public void replacingItemWorks() {
+        for (int i = 0; i < 10; i++) {
+            list.add(i);
+        }
+        
+        list.replace(3, 42);
+        
+        assert(list.get(3) == 42);
+    }
+    
+    @Test
+    public void performanceInsertionsSequential() {
+        long standardTime;
+        long implTime;
+        
+        long startTime = System.nanoTime();
+        
+        for (int i = 0; i < 10000; i++) {
+            standardList.add(i);
+        }
+        
+        long endTime = System.nanoTime();
+        standardTime = endTime - startTime;
+        
+        startTime = System.nanoTime();
+        
+        for (int i = 0; i < 10000; i++) {
+            list.add(i);
+        }
+        
+        endTime = System.nanoTime();
+        implTime = endTime - startTime;
+        
+        System.out.println("Std ArrayList: " + TimeUnit.NANOSECONDS.toMicros(standardTime) + " microseconds.");
+        System.out.println("Custom ArrayList: " + TimeUnit.NANOSECONDS.toMicros(implTime) + " microseconds");
     }
 }

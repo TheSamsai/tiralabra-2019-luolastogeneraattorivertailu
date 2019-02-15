@@ -103,11 +103,115 @@ Pseudokoodi:
 
 Jos listalta poistetaan elementti jostain indeksistä, kaikki elementit sen jälkeen joudutaan siirtämään taaksepäin.
 
-### Indeksointi, O(1)
+#### Indeksointi, O(1)
 
 ArrayList indeksoi lukuja ja kirjoituksia sisäisen taulukon perusteella, joten jonkin yksittäisen indeksin luku- tai kirjoitus
 on O(1) operaatio.
 
-### Läpikäynti, O(n)
+#### Läpikäynti, O(n)
 
+### HashSet (hajautustaulu)
 
+#### Tilavaativuus, O(n)
+
+HashSet alustetaan 1000:n alkion kokoisella taululla, jonka jälkeen taulun täyttösuhde pidetään aina alle 75% kasvattamalla
+taulukon kokoa nelinkertaiseksi aikaisemmasta. Näin ollen taulukko on aina vähintään 25% suurempi, kuin talletettujen
+alkioiden määrä.
+
+#### Lisäys, O(1) keskimäärin, O(log n) pahin tapaus
+
+Mikäli hajautustaulussa ei tapahdu yhteentörmäyksiä, lisäys on O(1) operaatio. Yhteentörmäysten käsittely on toteutettu
+avoimella hajautuksella neliöisellä kokeilulla, joten pahimmassa tapauksessa algoritmi joutuu tekemään log n hyppyä
+ennen kuin se löytää vapaan indeksin.
+
+#### Haku, O(1) keskimäärin, O(log n) pahin tapaus
+
+Haussa ajetaan sama algoritmi kuin lisäyksessä. Mikäli yhteentörmäyksiä ei tapahdu, haettu arvo on samassa indeksissä
+kuin laskettu hajautusarvo, jolloin operaation aikavaativuus on O(1).
+
+#### Taulukon uudelleenhajautus, O(n)
+
+Jos taulukon täyttösuhde kasvaa yli 75%, tietorakenteen käyttämä taulukko korvaataan neljä kertaa suuremmalla taulukolla, ja
+jokainen alkuperäisen taulukon alkio hajautetaan uudelleen.
+
+## BSP-generaattorin aikavaativuus
+
+BSP-generaattori koostuu kolmesta eri vaiheesta.
+
+### Puurakenteen generointi, O(n), missä n: rekursioiden lukumäärä
+
+Puurakenteen generoinnin pseudokoodi on seuraava:
+
+```python
+    def generate_tree(tree, n):
+        if (n == 0):
+            return
+        else:
+            tree.partition()
+            generate_tree(tree.left, n - 1)
+            generate_tree(tree.right, n - 1)
+```
+
+Algoritmille annettu rekursioiden määrä määrittää, kuinka syvälle algoritmia ajetaan, ja kuinka
+monimutkainen huoneiden ja käytävien verkko halutaan luoda.
+
+### Huoneiden luominen, O(n * m), missä n: huoneen korkeus, m: huoneen leveys
+
+Kun puurakenne kartasta on saatu valmiiksi, sen perusteella luodaan puun lehtisolmujen avulla "luolaston" huoneet.
+Pseudokoodi algoritmille on seuraava:
+
+```python
+    def carve_rooms(tree):
+        if is-leaf(tree):
+            draw_room(tree.room)
+        else:
+            carve_rooms(tree.left)
+            carve_rooms(tree.right)
+
+    def draw_room(room): // O(n * k)
+        for y = room.y to room.y + room.height:
+            for x = room.x to room.x + room.width:
+                create_floor(x, y)
+```
+
+Algoritmi on käytännössä vain syvyyshaku binääripuulle, ja jokaista lehtisolmua kohti ajetaan O(n * m) aikavaativuuden
+piirtofunktio.
+
+### Käytävien luominen, O(n), missä n: binääripuun lehtisolmujen lukumäärä
+
+Lopuksi generaattori luo jokaisen luolaston alipuun välille käytävät, siten että kaikista huoneista on pääsy kaikkiin muihin.
+Pseudokoodi:
+
+```python
+    def carve_tunnels(tree):
+        if is-leaf(tree):
+            return
+        else:
+            carve_tunnels(tree.left)
+            carve_tunnels(tree.right)
+
+            room1 = find_room(tree.left)
+            room2 = find_room(tree.right)
+
+            draw_tunnel(room1, room2)
+
+    def find_room(tree):
+        if is-leaf(tree):
+            return tree;
+        else:
+            return find_room(tree.left OR tree.right) // tarvitaan huone vain toiselta puolelta
+
+    def draw_tunnel(room1, room2):
+        x,y = room1.center
+
+        for x = x to room2.center.x:
+            draw_floor(x, y)
+
+        for y = y to room2.center.y:
+            draw_floor(x, y)
+```
+
+### Kokonaisuus, O(n)
+
+Kaikkiaan BSP-algoritmin aikavaativuus on O(n), missä n on binääripuun solmujen lukumäärä.
+Tilavaativuus samoin on verrannollinen puurakenteen syvyyteen algoritmin funktioiden rekursiivisuuden takia.

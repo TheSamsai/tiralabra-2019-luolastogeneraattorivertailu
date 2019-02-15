@@ -19,6 +19,10 @@ public class BSPGenerator {
     
     BinaryTree dungeonTree;
     
+    public BSPGenerator() {
+        rng = new Random();
+    }
+    
     /**
      * Generates a dungeon using simple binary space partitioning.
      * <p>
@@ -34,7 +38,6 @@ public class BSPGenerator {
      */
     public Dungeon generate(int x, int y) {
         Dungeon dungeon = new Dungeon(x, y);
-        rng = new Random();
         
         dungeonTree = new BinaryTree(new Room(0,0,x,y));
         
@@ -63,7 +66,7 @@ public class BSPGenerator {
      * Recursively partitions the tree until the tree cannot be partitioned further.
      * @param tree The binary tree that is used to store the sub-dungeons.
      */
-    private void generateTree(BinaryTree tree, int minArea, double balance, int iterations) {
+    public void generateTree(BinaryTree tree, int minArea, double balance, int iterations) {
         if (iterations == 0) {
             return;
         }
@@ -103,7 +106,7 @@ public class BSPGenerator {
      * @param tree The binary tree containing a sub-dungeon.
      * @param dungeon The Dungeon object that the rooms are to be carved on.
      */
-    private void carveRooms(BinaryTree tree, Dungeon dungeon) {
+    public void carveRooms(BinaryTree tree, Dungeon dungeon) {
         if (tree.getLeft() == null && tree.getRight() == null) {
             Room room = tree.getRoom();
             
@@ -136,7 +139,7 @@ public class BSPGenerator {
         }
     }
     
-    private void carveHallways(BinaryTree tree, Dungeon dungeon) {
+    public void carveHallways(BinaryTree tree, Dungeon dungeon) {
         if (tree.getLeft() == null || tree.getRight() == null) {
             return;
         }

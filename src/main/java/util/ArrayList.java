@@ -5,6 +5,7 @@
  */
 package util;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,6 +22,11 @@ public class ArrayList<A> implements Iterable<A> {
     public ArrayList() {
         list = new Object[DEFAULT_SIZE];
         capacity = DEFAULT_SIZE;
+    }
+    
+    public ArrayList(int size) {
+        list = new Object[size];
+        capacity = size;
     }
     
     /**
@@ -97,7 +103,7 @@ public class ArrayList<A> implements Iterable<A> {
      * Create a new array twice the size of the current one and copy
      * contents from the original array onto it and replace the old list.
      */
-    private void growArray() {
+    public void growArray() {
         Object newList[] = new Object[capacity * 2];
         
         for (int i = 0; i < size; i++) {

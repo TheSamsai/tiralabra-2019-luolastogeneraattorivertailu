@@ -38,3 +38,7 @@ generoidut luolat tulostetaan.
 
 Generointi käyttää syötteenä pseudosatunnaislukugeneraattoria. Tällä hetkellä käytössä on Javan standardikirjaston
 satunnaislukugeneraattori, mutta se tullaan korvaamaan omalla korvaavalla pseudosatunnaislukugeneraattorilla.
+
+Aputietorakenteilla on myös suorituskykytestejä, jotka vertaavat tietorakenteiden suorituskykyä Javan standardikirjaston
+tietorakenteisiin. Nämä testit on toteutettu JUnit testeinä ja ne ajetaan muiden yksikkötestien kanssa komennolla
+"./gradlew test".
