@@ -31,14 +31,29 @@ ruudut.
 
 ## Suorituskykytestaus
 
-Sovelluksen pääohjelma ajaa suorituskykytestit sovelluksen molemmille generaattorityypeille. Generaattoreita
-testataan pyytämällä ne generoimaan 50x50 kokoiset kartat kymmenen kertaa ja mittaamalla jokaiseen generaatioon
+Sovelluksen pääohjelma ajaa suorituskykytestit sovelluksen molemmille generaattorityypeille. Ohjelmä pyytää
+käyttäjältä halutun luolaston leveyden ja korkeuden. Tämän jälkeen generaattoreita testataan pyytämällä ne 
+generoimaan käyttäjän pyytämän kokoiset luolastot kymmenen kertaa ja mittaamalla jokaiseen generaatioon
 kulutettu aika. Tämän jälkeen näiden kymmenen testin tulosten keskiarvo raportoidaan käyttäjälle ja viimeiseksi
 generoidut luolat tulostetaan.
 
-Generointi käyttää syötteenä pseudosatunnaislukugeneraattoria. Tällä hetkellä käytössä on Javan standardikirjaston
-satunnaislukugeneraattori, mutta se tullaan korvaamaan omalla korvaavalla pseudosatunnaislukugeneraattorilla.
+Generointi käyttää syötteenä pseudosatunnaislukugeneraattoria, joka alustetaan järjestelmän kellon mukaan.
 
 Aputietorakenteilla on myös suorituskykytestejä, jotka vertaavat tietorakenteiden suorituskykyä Javan standardikirjaston
 tietorakenteisiin. Nämä testit on toteutettu JUnit testeinä ja ne ajetaan muiden yksikkötestien kanssa komennolla
 "./gradlew test".
+
+Dokumentoinnin ohessa on kaaviot generaattoreiden suorituskyvystä suhteessa pyydetyn luolaston kokoon. Tämä
+testaus toteutettiin omalla pöytäkoneella, joka on varustettu Ryzen 7 1700 prosessorilla (3.7 GHz) ja 2133 MHz 
+keskusmuistilla.
+
+BSP-generaattori on testauksen perusteella huomattavasti nopeampi kuin soluautomaattiin perustuva generaattori,
+kuten määrittelydokumentaatiossa ennustin. Järkevän kokoisilla syötteillä (< 200 x 200) generaattorin suorituskyky
+pysyi melkein muuttumattomana, ja valtaosa algoritmin ajankäytöstä oli käytävien piirtämistä.
+
+Soluautomaatti puolestaan hidastui nopeasti luolaston koon kasvaessa, sillä algoritmin eri osien suorituskyky
+perustuu vahvasti luolaston kokoon. Soluautomaatin aikaavievin osa on luolaston segmenttien yhdistäminen, joka
+on vastuussa yli 50% suoritusajasta. Kuitenkin, vaikka segmenttejä ei yhdisteltäisiin, yksinään luolaston
+generointiin vaadittava soluautomaatin simulointi käyttää enemmän aikaa kuin BSP-algoritmi yhteensä samankokoiselle
+luolastolle. Siispä vaikka segmenttien yhdistäminen jätettäisiin pois, olisi soluautomaatti kuitenkin huomattavasti
+hitaampi, joten sen hinta ei ole vertailumielessä niin merkittävä.

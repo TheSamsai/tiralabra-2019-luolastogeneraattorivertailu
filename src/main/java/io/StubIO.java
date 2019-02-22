@@ -5,8 +5,7 @@
  */
 package io;
 
-import java.util.ArrayList;
-import java.util.List;
+import util.ArrayList;
 
 /**
  *
@@ -21,14 +20,14 @@ public class StubIO implements IO {
         input = new ArrayList<>();
     }
 
-    public List<String> getOutput() {
+    public ArrayList<String> getOutput() {
         return output;
     }
     
-    public List<String> getInput() {
+    public ArrayList<String> getInput() {
         return input;
     }
-    
+     
     public void addInput(String string) {
         input.add(string);
     }
@@ -45,6 +44,7 @@ public class StubIO implements IO {
 
     @Override
     public String read() {
-        return input.remove(0);
+        String s = input.get(0);
+        return s;
     }
 }

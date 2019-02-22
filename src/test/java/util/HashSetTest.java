@@ -133,6 +133,22 @@ public class HashSetTest {
     }
     
     @Test
+    public void setElementsAreIntact() {
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        for (int i = 0; i < 10; i++) {
+            set.add(i);
+            list.add(i);
+        }
+        
+        ArrayList<Integer> elements = set.getElements();
+        
+        for (int i : list) {
+            assert(elements.contains(i));
+        }
+    }
+    
+    @Test
     public void performanceInsertionsSequential() {
         long standardTime = 0;
         long implTime = 0;

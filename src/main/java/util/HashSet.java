@@ -5,11 +5,13 @@
  */
 package util;
 
+import java.util.Iterator;
+
 /**
  *
  * @author sami
  */
-public class HashSet<T> {
+public class HashSet<T> implements Iterable {
     // Set is an arraylist containing N buckets (also arraylists)
     Object list[];
     int DEFAULT_CAPACITY = 1000;
@@ -40,18 +42,24 @@ public class HashSet<T> {
      * @param element The element to be added to the set
      */
     public void add(T element) {
-        int index = hashIndex(element);
+        int hash = hashIndex(element);
         
-        int attempt = 0;
+        int attempt = 1;
+        
+        int index = hash;
         
         // Use quadratic probing to find the next empty index
         // Stop if an element equal to the one being added is found
         while (index < capacity && list[index] != null && !element.equals(list[index])) {
+            
+            index = hash + attempt * attempt;
+            
             attempt++;
-            index += attempt * attempt;
             
             if (index >= capacity) {
-                index = 0;
+                rehash();
+                add(element);
+                return;
             }
         }
         
@@ -91,14 +99,15 @@ public class HashSet<T> {
      * @return The element, if part of the set, null otherwise
      */
     public T get(T element) {
-        int index = hashIndex(element);
+        int hash = hashIndex(element);
         
-        int attempt = 0;
+        int attempt = 1;
+        int index = hash;
         
         // We need to also do quadratic probing here in order to find the element
         while (index < capacity && list[index] != null && !element.equals((T) list[index])) {
+            index = hash + attempt * attempt;
             attempt++;
-            index += attempt * attempt;
         }
         
         // If the index is within bounds, the index will contain either our value
@@ -116,15 +125,16 @@ public class HashSet<T> {
      * @param element 
      */
     public void remove(T element) {
-        int index = hashIndex(element);
+        int hash = hashIndex(element);
         
-        int attempt = 0;
+        int attempt = 1;
+        int index = hash;
         
         // Quadratic probing
         while (index < capacity && list[index] != null && !element.equals((T) list[index])) {
-            attempt++;
+            index = hash + attempt * attempt;
             
-            index = attempt * attempt;
+            attempt++;
         }   
         
         if (index < capacity) {
@@ -170,5 +180,36 @@ public class HashSet<T> {
     }
     public int getSize() {
         return size;
+    }
+
+    /**
+     * Create an iterator to allow "for (x : y)" iteration syntax
+     * @return An iterator over the current ArrayList
+     */
+    @Override
+    public Iterator<T> iterator() {
+        Iterator it =  new Iterator<T>() {
+            private int elemNum = 0;
+            private int lastIndex = -1;
+            
+            @Override
+            public boolean hasNext() {
+                return elemNum < size;
+            }
+
+            @Override
+            public T next() {
+                int index = lastIndex + 1;
+                
+                while (list[index] == null) index++;
+                
+                elemNum++;
+                
+                return (T) list[index];
+            }
+        
+        };
+        
+        return it;
     }
 }

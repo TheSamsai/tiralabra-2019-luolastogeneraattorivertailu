@@ -77,7 +77,7 @@ public class Dungeon {
         for (int y = 0; y < this.y; y++) {
             for (int x = 0; x < this.x; x++) {
                 if (!tiles[y][x]) {
-                    io.print("-");
+                    io.print(" ");
                 } else {
                     io.print("X");
                 }

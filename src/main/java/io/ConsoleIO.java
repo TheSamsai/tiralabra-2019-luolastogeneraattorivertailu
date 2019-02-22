@@ -33,5 +33,4 @@ public class ConsoleIO implements IO {
     public String read() {
         return scan.nextLine();
     }
-    
 }

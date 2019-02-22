@@ -12,6 +12,7 @@ import domain.Dungeon;
 import domain.Room;
 import io.ConsoleIO;
 import java.util.concurrent.TimeUnit;
+import rng.Random;
 
 /**
  *
@@ -19,11 +20,23 @@ import java.util.concurrent.TimeUnit;
  */
 public class Main {
     public static void main(String[] args) {
+        ConsoleIO io = new ConsoleIO();
+        
+        System.out.println("Dungeon generator.");
+        System.out.println("What size of a dungeon do you want to generate?");
+        System.out.print("Width: ");
+        
+        int width = Integer.parseInt(io.read());
+        
+        System.out.print("Height: ");
+        
+        int height = Integer.parseInt(io.read());
+        
         BSPGenerator bspGen = new BSPGenerator();
-        Dungeon bspDungeon = new Dungeon(100, 100);
+        Dungeon bspDungeon = new Dungeon(width, height);
         
         CellAutomataGenerator cellGen = new CellAutomataGenerator();
-        Dungeon cellDungeon = new Dungeon(100, 100);
+        Dungeon cellDungeon = new Dungeon(width, height);
         
         long bspTime = 0;
         long bspTreeTime = 0;
@@ -38,9 +51,10 @@ public class Main {
         long startTime;
         long endTime;
         
+        // Benchmark BSP Generator
         for (int x = 0; x < 10; x++) {
-            BinaryTree dungeonTree = new BinaryTree(new Room(0,0,50,50));
-            bspDungeon = new Dungeon(50, 50);
+            BinaryTree dungeonTree = new BinaryTree(new Room(0,0,width,height));
+            bspDungeon = new Dungeon(width, height);
             
             startTime = System.nanoTime();
             
@@ -78,8 +92,9 @@ public class Main {
         bspRoomTime /= 10;
         bspHallwayTime /= 10;
         
+        // Benchmark Cellular Automata Generator
         for (int x = 0; x < 10; x++) {
-            cellDungeon = new Dungeon(50, 50);
+            cellDungeon = new Dungeon(width, height);
             
             startTime = System.nanoTime();
             
@@ -115,6 +130,12 @@ public class Main {
         cellSimulationTime /= 10;
         cellConnectSegmentTime /= 10;
         
+        System.out.println("\nBSP dungeon: ");
+        bspDungeon.print();
+        
+        System.out.println("\nCellular automata dungeon:");
+        cellDungeon.print();
+        
         System.out.println("GENERATOR RESULTS:");
         System.out.println("\tBSP-Generator: average time " + TimeUnit.NANOSECONDS.toMicros(bspTime) + " microseconds.");
         System.out.println("\t\t tree generation: " + TimeUnit.NANOSECONDS.toMicros(bspTreeTime) + " microseconds");
@@ -127,12 +148,6 @@ public class Main {
         System.out.println("\t\t initialization: " + TimeUnit.NANOSECONDS.toMicros(cellInitTime) + " microseconds");
         System.out.println("\t\t simulation: " + TimeUnit.NANOSECONDS.toMicros(cellSimulationTime) + " microseconds");
         System.out.println("\t\t segment connecting: " + TimeUnit.NANOSECONDS.toMicros(cellConnectSegmentTime) + " microseconds");
-        
-        System.out.println("\nBSP dungeon: ");
-        bspDungeon.print();
-        
-        System.out.println("\nCellular automata dungeon:");
-        cellDungeon.print();
     }
     
     public static void runCellGen() {

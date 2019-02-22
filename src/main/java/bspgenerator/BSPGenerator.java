@@ -7,7 +7,7 @@ package bspgenerator;
 
 import domain.Room;
 import domain.Dungeon;
-import java.util.Random;
+import rng.Random;
 
 /**
  *

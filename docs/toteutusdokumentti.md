@@ -155,7 +155,7 @@ Puurakenteen generoinnin pseudokoodi on seuraava:
 Algoritmille annettu rekursioiden määrä määrittää, kuinka syvälle algoritmia ajetaan, ja kuinka
 monimutkainen huoneiden ja käytävien verkko halutaan luoda.
 
-### Huoneiden luominen, O(n * m), missä n: huoneen korkeus, m: huoneen leveys
+### Huoneiden luominen, O(n), missä n: binääripuun lehtisolmujen määrä
 
 Kun puurakenne kartasta on saatu valmiiksi, sen perusteella luodaan puun lehtisolmujen avulla "luolaston" huoneet.
 Pseudokoodi algoritmille on seuraava:
@@ -174,12 +174,14 @@ Pseudokoodi algoritmille on seuraava:
                 create_floor(x, y)
 ```
 
-Algoritmi on käytännössä vain syvyyshaku binääripuulle, ja jokaista lehtisolmua kohti ajetaan O(n * m) aikavaativuuden
-piirtofunktio.
+Algoritmi on käytännössä vain syvyyshaku binääripuulle, ja jokaista lehtisolmua kohti ajetaan O(w * h)
+aikavaativuuden piirtofunktio. Koska huoneille on ennalta määritelty keskimääräinen koko, on huoneiden
+lukumäärä kriittisin tekijä algoritmin aikavaativuudessa.
 
 ### Käytävien luominen, O(n), missä n: binääripuun lehtisolmujen lukumäärä
 
 Lopuksi generaattori luo jokaisen luolaston alipuun välille käytävät, siten että kaikista huoneista on pääsy kaikkiin muihin.
+
 Pseudokoodi:
 
 ```python
@@ -215,3 +217,80 @@ Pseudokoodi:
 
 Kaikkiaan BSP-algoritmin aikavaativuus on O(n), missä n on binääripuun solmujen lukumäärä.
 Tilavaativuus samoin on verrannollinen puurakenteen syvyyteen algoritmin funktioiden rekursiivisuuden takia.
+
+## Soluautomaattigeneraattorin aikavaativuus
+
+Soluautomaatti koostuu myös kolmesta erillisestä vaiheesta.
+
+### Alustus, O(n * k), missä n on luolaston leveys ja k luolaston korkeus
+
+Soluautomaatin luolasto alustetaan satunnaisilla arvoilla, joten jokaiselle luolaston ruudulle on
+määriteltävä yksitellen onko se seinää vai lattiaa.
+
+Pseudokoodi:
+
+```python
+    def init():
+        for y = 0 to height:
+            for x = 0 to width:
+                tile(x, y) = Wall OR Floor
+```
+
+### Simulointi, O(n * k), missä n on luolaston leveys ja k luolaston korkeus
+
+Luolaston eri ruutuja käsitellään seuraavaksi soluautomaattina ja jokaisessa simulaation vaiheessa jokaisen
+ruudun kohdalla päätetään muiden ruutujen perusteella, onko ruutu seinää vai lattiaa. Simulaatiota ajetaan vain
+neljä kertaa, joten simulaatioiden lukumäärä ei vaikuta algoritmin aikavaativuuteen.
+
+Pseudokoodi:
+
+```python
+    def simulate():
+        for y = 0 to height:
+            for x = 0 to width:
+                if is-wall(x, y):
+                    if wall-neighbours(x, y) < 4:
+                        tile(x, y) = floor
+                else:
+                    if wall-neighbours(x, y) >= 5 or walls-nearby <= 2:
+                        tile(x, y) = wall
+```
+
+### Luolaston segmenttien yhdistäminen, O(n * w * h), missä n: segmenttien lukumäärä, w: leveys, h: korkeus
+
+Koska algoritmi voi tuottaa luolastoja, jotka koostuvat erillisistä osista, tulee kaikki luolaston eri osat
+yhdistää käytävillä, jotta voidaan taata, että kaikista luolaston osista on pääsy muihin osiin. Tämä toteutetaan
+etsimällä BFS-haulla kaikki luolaston segmentit, ja tämän jälkeen segmentit yhdistetään toisiinsa yksi kerrallaan.
+
+Pseudokoodi:
+
+```python
+    def connect-segments():
+        segments = []
+
+        for y = 0 to height:
+            for x = 0 to width:
+                for segment in segments:
+                    if (x,y) not in segment:
+                        new_segment = BFS(x, y) // O(v) operaatio
+                        segments.add(new_segment)
+        
+        previous = segments.get(0)
+
+        for segment in segments:
+            carve-hallway(segment.get-first(), previous.get-first())
+            previous = segment
+```
+
+Tämä algoritmin osa on todettu suorituskykytestauksessa algoritmin kaikista aikaavievimmäksi osaksi. Segmenttien
+yhdistämiselle on olemassa tehokkaampia vaihtoehtoisia menetelmiä, kuten irrallisten segmenttien täyttö tai
+simulaation alustamisen muuttaminen sellaiseksi, että tietylle alueelle on taattu, luolan yhdistävä käytävä.
+Tein kuitenkin sen päätöksen, että halusin ennemmin isompia, satunnaisia luolastoja, kuin pienempiä,
+vähemmän satunnaisia luolastoja. Luolastot voisi myös generoida ilman segmenttien yhdistämistä, jolloin
+luolasto eri olisi yhtenäinen.
+
+### Kokonaisuus, O(n * w * h)
+
+Soluautomaatin suorituskyky perustuu suurelta osin segmenttien yhdistelyn suorituskykyyn, sillä tämä vaihe on
+algoritmin kaikista intensiivisin. Tämän voi myös todeta suorituskykytestien perusteella, jotka osoittavat,
+että yli 50% algoritmin suoritusajasta kuluu segmenttien yhdistämiseen. 

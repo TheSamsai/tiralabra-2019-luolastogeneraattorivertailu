@@ -7,8 +7,9 @@ package cellautomatagenerator;
 
 import domain.Dungeon;
 import domain.DungeonBFS;
-import java.util.Random;
+import rng.Random;
 import util.ArrayList;
+import util.HashSet;
 import util.Pair;
 
 /**
@@ -133,7 +134,7 @@ public class CellAutomataGenerator {
      */
     public void connectSegments(Dungeon dungeon) {
         // List of all disjoint segments in a dungeon
-        ArrayList<ArrayList<Pair<Integer, Integer>>> segments = new ArrayList<>();
+        ArrayList<HashSet<Pair<Integer, Integer>>> segments = new ArrayList<>();
         
         for (int y = 0; y < dungeon.y; y++) {
             for (int x = 0; x < dungeon.x; x++) {
@@ -141,7 +142,7 @@ public class CellAutomataGenerator {
                     boolean newSegment = true;
                     
                     // Check if tile belongs to any known segment
-                    for (ArrayList<Pair<Integer, Integer>> list : segments) {
+                    for (HashSet<Pair<Integer, Integer>> list : segments) {
                         if (list.contains(new Pair(x, y))) {
                             newSegment = false;
                         }
@@ -149,20 +150,31 @@ public class CellAutomataGenerator {
                     
                     // If the tile is part of a new segment, run BFS and add a new segment to the list
                     if (newSegment) {
-                        ArrayList<Pair<Integer, Integer>> segment = DungeonBFS.traverseBFS(dungeon, new Pair(x, y));
-                        segments.add(segment);
+                        ArrayList<Pair<Integer, Integer>> segmentList = DungeonBFS.traverseBFS(dungeon, new Pair(x, y));
+                        
+                        HashSet<Pair<Integer, Integer>> newSet = new HashSet<>();
+                        
+                        for (Pair<Integer, Integer> element : segmentList) {
+                            newSet.add(element);
+                        }
+                        
+                        segments.add(newSet);
                     }
                 }
             }
         }
         
         // We keep track of the last segment to join the segments more or less in logical order
-        ArrayList<Pair<Integer, Integer>> lastSegment = segments.get(0);
+        HashSet<Pair<Integer, Integer>> lastSegment = segments.get(0);
         
         // Connect segments one-by-one to the last segment until all segments have been connected.
         for (int i = 1; i < segments.getSize(); i++) {
-            dungeon.carveTunnel(lastSegment.get(0), segments.get(i).get(0));
+            dungeon.carveTunnel(lastSegment.iterator().next(), segments.get(i).iterator().next());
             lastSegment = segments.get(i);
         }
+    }
+    
+    public void floodfill(Dungeon dungeon) {
+        
     }
 }
