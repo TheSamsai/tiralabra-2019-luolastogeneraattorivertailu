@@ -32,6 +32,8 @@ Näitä tietorakenteita ovat dynaaminen taulukkototeutus ArrayList.java ja linki
 jonototeutus tiedostoissa Queue.java ja QueueNode.java. Lisäksi aputietorakenteet sisältävät luokan Pair.java,
 joka on yksinkertaisesti sitoo kaksi arvoa toisiinsa.
 
+Näiden lisäksi sovelluksen yhteydessä on toteutettu pseudosatunnaislukugeneraattori, joka perustuu LCG-algoritmiin.
+
 ## Tietorakenteiden aika- ja tilavaativuudet
 
 ### Jono
