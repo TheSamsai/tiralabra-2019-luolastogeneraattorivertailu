@@ -47,9 +47,13 @@ Dokumentoinnin ohessa on kaaviot generaattoreiden suorituskyvystä suhteessa pyy
 testaus toteutettiin omalla pöytäkoneella, joka on varustettu Ryzen 7 1700 prosessorilla (3.7 GHz) ja 2133 MHz 
 keskusmuistilla.
 
+![](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/BSP-generaattori-suorituskyky.png)
+
 BSP-generaattori on testauksen perusteella huomattavasti nopeampi kuin soluautomaattiin perustuva generaattori,
 kuten määrittelydokumentaatiossa ennustin. Järkevän kokoisilla syötteillä (< 200 x 200) generaattorin suorituskyky
 pysyi melkein muuttumattomana, ja valtaosa algoritmin ajankäytöstä oli käytävien piirtämistä.
+
+![](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/Cell-generaattori-suorituskyky.png)
 
 Soluautomaatti puolestaan hidastui nopeasti luolaston koon kasvaessa, sillä algoritmin eri osien suorituskyky
 perustuu vahvasti luolaston kokoon. Soluautomaatin aikaavievin osa on luolaston segmenttien yhdistäminen, joka
@@ -57,3 +61,5 @@ on vastuussa yli 50% suoritusajasta. Kuitenkin, vaikka segmenttejä ei yhdistelt
 generointiin vaadittava soluautomaatin simulointi käyttää enemmän aikaa kuin BSP-algoritmi yhteensä samankokoiselle
 luolastolle. Siispä vaikka segmenttien yhdistäminen jätettäisiin pois, olisi soluautomaatti kuitenkin huomattavasti
 hitaampi, joten sen hinta ei ole vertailumielessä niin merkittävä.
+
+![](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/Cell-generaattori-suorituskyky-ilman-segmenttej%C3%A4.png)
