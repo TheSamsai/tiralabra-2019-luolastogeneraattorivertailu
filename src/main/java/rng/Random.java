@@ -64,6 +64,8 @@ public class Random {
         
         if (s < 0) s *= -1;
         
+        if (n == 0) return 0;
+        
         return s % n;
     }
     

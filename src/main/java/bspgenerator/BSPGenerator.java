@@ -71,19 +71,31 @@ public class BSPGenerator {
             return;
         }
         
+        // Calculate the center lines of the room
         int heightMiddle = tree.getRoom().h / 2;
         int widthMiddle = tree.getRoom().w / 2;
         
+        // We need to get the room's 1/10th to calculate increments
+        double height10 = tree.getRoom().h * 0.10;
+        double width10 = tree.getRoom().w * 0.10;
+        
+        // Calculate an offset (up to 10% of the width or height) for various room sizes
+        int heightIncrement = ((int) height10) - rng.nextInt((int) height10 * 2);
+        int widthIncrement = ((int) width10) - rng.nextInt((int) height10 * 2);
+        
         double newBalance = balance;
         
+        // The balance determines which partition should be taken
         if (rng.nextDouble() > balance) {
-            tree.partitionVertical(heightMiddle);
+            tree.partitionVertical(heightMiddle + heightIncrement);
             newBalance += 0.20;
         } else {
-            tree.partitionHorizontal(widthMiddle);
+            tree.partitionHorizontal(widthMiddle + widthIncrement);
             newBalance -= 0.20;
         }
         
+        // If the area in the generated leaf nodes are too small,
+        // we replace the leaves with null, making this node a leaf
         if (tree.getLeft().getRoom().area() < minArea || tree.getRight().getRoom().area() < minArea) {
             tree.insertLeft(null);
             tree.insertRight(null);
@@ -96,8 +108,8 @@ public class BSPGenerator {
             newBalance -= 0.10;
         }
         
+        // Recursively generate the sub dungeons to the left and right
         generateTree(tree.getLeft(), minArea, newBalance, iterations - 1);
-        
         generateTree(tree.getRight(), minArea, newBalance, iterations - 1);
     }
     

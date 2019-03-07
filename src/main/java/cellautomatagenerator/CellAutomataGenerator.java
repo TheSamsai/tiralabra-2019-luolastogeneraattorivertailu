@@ -173,8 +173,4 @@ public class CellAutomataGenerator {
             lastSegment = segments.get(i);
         }
     }
-    
-    public void floodfill(Dungeon dungeon) {
-        
-    }
 }
