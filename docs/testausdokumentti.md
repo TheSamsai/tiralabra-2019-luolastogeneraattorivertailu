@@ -44,9 +44,13 @@ Aputietorakenteilla on myös suorituskykytestejä, jotka vertaavat tietorakentei
 tietorakenteisiin. Nämä testit on toteutettu JUnit testeinä ja ne ajetaan muiden yksikkötestien kanssa komennolla
 "./gradlew test".
 
+![](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/HashSet-suorituskyky.png)
+
 Suorituskykytestauksessa havaittiin, että toteutettu HashSet on nopeampi kuin Javan standardikirjaston toteutus
 lisäyksissä, mutta hitaampi hauissa. Erityisesti satunnaisissa hauissa, joissa elementit eivät kuulu settiin,
 HashSet toteutus on huomattavasti hitaampi.
+
+![](https://github.com/TheSamsai/tiralabra-2019-luolastogeneraattorivertailu/blob/master/docs/ArrayList-suorituskyky.png)
 
 ArrayList-toteutus on hieman hitaampi kuin standardikirjaston toteutus lisäyksissä, mutta on melko lähellä
 standardikirjaston toteutuksen tehokkuutta.
