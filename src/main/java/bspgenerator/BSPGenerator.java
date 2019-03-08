@@ -139,6 +139,11 @@ public class BSPGenerator {
         carveRooms(tree.getRight(), dungeon);
     }
     
+    /**
+     * Does a semi-randomized DFS to find a leaf node (a room) in the dungeon tree
+     * @param tree A BinaryTree containing the dungeon data
+     * @return A room contained in a leaf node of the tree
+     */
     public Room findRoom(BinaryTree tree) {
         if (tree.getLeft() == null && tree.getRight() == null) {
             return tree.getRoom();
@@ -151,6 +156,11 @@ public class BSPGenerator {
         }
     }
     
+    /**
+     * Carves hallways between the rooms in the leaf nodes of the dungeon tree
+     * @param tree The BinaryTree representation of the dungeon
+     * @param dungeon The dungeon object to be modified
+     */
     public void carveHallways(BinaryTree tree, Dungeon dungeon) {
         if (tree.getLeft() == null || tree.getRight() == null) {
             return;

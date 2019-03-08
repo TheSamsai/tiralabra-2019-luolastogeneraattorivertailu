@@ -103,7 +103,8 @@ Pseudokoodi:
 
 #### Poisto, O(n)
 
-Jos listalta poistetaan elementti jostain indeksistä, kaikki elementit sen jälkeen joudutaan siirtämään taaksepäin.
+Jos listalta poistetaan elementti jostain indeksistä, kaikki elementit sen jälkeen joudutaan siirtämään taaksepäin. Pahimmassa tapauksessa
+listan ensimmäinen elementti poistetaan, jolloin kaikki listan loput elementit joudutaan siirtämään.
 
 #### Indeksointi, O(1)
 
@@ -120,21 +121,40 @@ HashSet alustetaan 1000:n alkion kokoisella taululla, jonka jälkeen taulun täy
 taulukon kokoa nelinkertaiseksi aikaisemmasta. Näin ollen taulukko on aina vähintään 25% suurempi, kuin talletettujen
 alkioiden määrä.
 
-#### Lisäys, O(1) keskimäärin, O(log n) pahin tapaus
+#### Lisäys, O(1) keskimäärin, O(n) pahin tapaus
 
 Mikäli hajautustaulussa ei tapahdu yhteentörmäyksiä, lisäys on O(1) operaatio. Yhteentörmäysten käsittely on toteutettu
-avoimella hajautuksella neliöisellä kokeilulla, joten pahimmassa tapauksessa algoritmi joutuu tekemään log n hyppyä
-ennen kuin se löytää vapaan indeksin.
+avoimella hajautuksella neliöisellä kokeilulla, joten pahimmassa tapauksessa algoritmi joutuu tekemään n hyppyä
+ennen kuin se löytää vapaan indeksin. Mikäli hajautustaulun täyttösuhde on yli 75% tai avoin hajautus ylittää
+hajautustaulun kapasiteetin, täytyy lisäyksen yhteydessä hajautustaulu uudelleenhajauttaa, mikä on O(n) operaatio.
 
-#### Haku, O(1) keskimäärin, O(log n) pahin tapaus
+#### Haku, O(1) keskimäärin, O(n) pahin tapaus
 
 Haussa ajetaan sama algoritmi kuin lisäyksessä. Mikäli yhteentörmäyksiä ei tapahdu, haettu arvo on samassa indeksissä
-kuin laskettu hajautusarvo, jolloin operaation aikavaativuus on O(1).
+kuin laskettu hajautusarvo, jolloin operaation aikavaativuus on O(1). 
 
 #### Taulukon uudelleenhajautus, O(n)
 
 Jos taulukon täyttösuhde kasvaa yli 75%, tietorakenteen käyttämä taulukko korvaataan neljä kertaa suuremmalla taulukolla, ja
-jokainen alkuperäisen taulukon alkio hajautetaan uudelleen.
+jokainen alkuperäisen taulukon alkio hajautetaan uudelleen. 
+
+### Pseudosatunnaislukugeneraattori
+
+#### Tilavaativuus, O(1)
+
+Satunnaislukugeneraattori sisältää vain yhden arvon, jonka perusteella tulevat arvot lasketaan
+
+#### Uuden luvun generointi, O(1)
+
+Satunnaislukugeneraattori tuottaa uuden luvun ja uuden generaattorin tilan käyttäen Linear Congruential Generator- algoritmia. Koska kyseessä on aina yksi laskutoimitus, on lukujen generointi aina vakioaikainen operaatio.
+
+Generaattorin uusi tila lasketaan seuraavasti:
+
+```java
+    seed = (multiplier * seed + increment) % modulus;
+```
+
+Josta luodaan seuraava lukuarvo siirtämällä "seed" arvon bittejä.
 
 ## BSP-generaattorin aikavaativuus
 
@@ -224,7 +244,7 @@ Tilavaativuus samoin on verrannollinen puurakenteen syvyyteen algoritmin funktio
 
 Soluautomaatti koostuu myös kolmesta erillisestä vaiheesta.
 
-### Alustus, O(n * k), missä n on luolaston leveys ja k luolaston korkeus
+### Alustus, O(w * h), missä w on luolaston leveys ja h luolaston korkeus
 
 Soluautomaatin luolasto alustetaan satunnaisilla arvoilla, joten jokaiselle luolaston ruudulle on
 määriteltävä yksitellen onko se seinää vai lattiaa.
@@ -238,7 +258,7 @@ Pseudokoodi:
                 tile(x, y) = Wall OR Floor
 ```
 
-### Simulointi, O(n * k), missä n on luolaston leveys ja k luolaston korkeus
+### Simulointi, O(w * h), missä w on luolaston leveys ja h luolaston korkeus
 
 Luolaston eri ruutuja käsitellään seuraavaksi soluautomaattina ja jokaisessa simulaation vaiheessa jokaisen
 ruudun kohdalla päätetään muiden ruutujen perusteella, onko ruutu seinää vai lattiaa. Simulaatiota ajetaan vain
@@ -258,7 +278,7 @@ Pseudokoodi:
                         tile(x, y) = wall
 ```
 
-### Luolaston segmenttien yhdistäminen, O(n * w * h), missä n: segmenttien lukumäärä, w: leveys, h: korkeus
+### Luolaston segmenttien yhdistäminen, O(w * h), missä w: leveys, h: korkeus
 
 Koska algoritmi voi tuottaa luolastoja, jotka koostuvat erillisistä osista, tulee kaikki luolaston eri osat
 yhdistää käytävillä, jotta voidaan taata, että kaikista luolaston osista on pääsy muihin osiin. Tämä toteutetaan
@@ -274,7 +294,7 @@ Pseudokoodi:
             for x = 0 to width:
                 for segment in segments:
                     if (x,y) not in segment:
-                        new_segment = BFS(x, y) // O(v) operaatio
+                        new_segment = BFS(x, y) # O(v) operaatio
                         segments.add(new_segment)
         
         previous = segments.get(0)
@@ -291,8 +311,28 @@ Tein kuitenkin sen päätöksen, että halusin ennemmin isompia, satunnaisia luo
 vähemmän satunnaisia luolastoja. Luolastot voisi myös generoida ilman segmenttien yhdistämistä, jolloin
 luolasto eri olisi yhtenäinen.
 
-### Kokonaisuus, O(n * w * h)
+### Kokonaisuus, O(w * h)
 
 Soluautomaatin suorituskyky perustuu suurelta osin segmenttien yhdistelyn suorituskykyyn, sillä tämä vaihe on
 algoritmin kaikista intensiivisin. Tämän voi myös todeta suorituskykytestien perusteella, jotka osoittavat,
 että yli 50% algoritmin suoritusajasta kuluu segmenttien yhdistämiseen. 
+
+## Puutteet ja parannusehdotukset
+
+Ohjelman isoin puute on sen ulkonäkö. Alunperin ajattelin, että toteuttaisin ohjelmalle GUI:n JavaFX:llä, jotta
+luolastojen graafinen esitys olisi ollut hieman mukavampi, ja mahdollisesti ohjelman eri vaiheita olisi voinut
+animoida, ja siten paremmin näyttää generaattorialgoritmien toimintatapaa.
+
+Toinen iso puute on HashSetin suorituskyky, joka mielestäni jäi hieman liian paljon Javan standarditoteutuksesta
+jälkeen. Todennäköisesti ratkaisu tässä tapauksessa olisi ollut hyödyntää ylivuotolistoja avoimen hajautuksen
+sijasta, niinkuin alunperin oli tarkoitus, mutta koska en saanut ylivuotolistoja toimimaan halutulla tavalla,
+jätin HashSet toteutuksen avoimeen hajautukseen, joskin sitäkin jouduin paikoin korjaamaan.
+
+## Lähteet
+
+[BSP-generaattorin algoritmi](http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation)
+[Soluautomaattigeneraattorin algoritmi](http://roguebasin.roguelikedevelopment.org/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels)
+[Hajautustaulun perusteet](https://en.wikipedia.org/wiki/Hash_table#Open_addressing)
+[Hajautustaulun neliöllinen kokeilu](https://en.wikipedia.org/wiki/Quadratic_probing)
+[ArrayList-algoritmit](https://en.wikipedia.org/wiki/Dynamic_array)
+[Pseudosattunnaislukugeneraattorin algorimit (LCG)](https://en.wikipedia.org/wiki/Linear_congruential_generator)

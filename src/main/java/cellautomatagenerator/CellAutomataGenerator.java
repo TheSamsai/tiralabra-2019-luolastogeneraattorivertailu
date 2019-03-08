@@ -68,12 +68,12 @@ public class CellAutomataGenerator {
      * 
      * <p>
      * The cellular automata obeys the following rules:
-     * <li>
-     *  <ul>If a wall is surrounded by less than 4 walls, it becomes floor</ul>
-     *  <ul>If a wall has 4 or more surrounding walls, it stays a wall</ul>
-     *  <ul>If a floor is surrounded by more than 5 walls or it has less than two walls 2 tiles away, it turns into a wall</ul>
-     * </li>
      * </p>
+     * <ul>
+     *  <li>If a wall is surrounded by less than 4 walls, it becomes floor</li>
+     *  <li>If a wall has 4 or more surrounding walls, it stays a wall</li>
+     *  <li>If a floor is surrounded by more than 5 walls or it has less than two walls 2 tiles away, it turns into a wall</li>
+     * </ul>
      * @param dungeon 
      */
     public void simulateStep(Dungeon dungeon) {

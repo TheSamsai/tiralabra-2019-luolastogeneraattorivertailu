@@ -56,11 +56,19 @@ public class HashSetTest {
     }
     
     @Test
+    public void hashSetGeneratesIndexForValue() {
+        int index = set.findIndex(1);
+        
+        System.out.println(index);
+    }
+    
+    @Test
     public void insertionIncreasesSize() {
         set.add(1);
         
         assert(set.getSize() == 1);
     }
+    
     
     @Test
     public void canFindElementAfterInsertion() {
@@ -104,11 +112,11 @@ public class HashSetTest {
     
     @Test
     public void rehashingChangesHashIndexes() {
-        int oldIndex = set.hashIndex(1001);
+        int oldIndex = set.findIndex(1001);
         
         set.rehash();
         
-        int newIndex = set.hashIndex(1001);
+        int newIndex = set.findIndex(1001);
         
         assert(oldIndex != newIndex);
     }

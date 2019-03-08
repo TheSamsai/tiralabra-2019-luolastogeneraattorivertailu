@@ -28,8 +28,8 @@ public class Room {
     }
     
     /**
-     *
-     * @return
+     * Get the center position of a room
+     * @return The (X, Y) coordinate of the room center
      */
     public Pair<Integer, Integer> center() {
         int a = x + (w / 2);
@@ -38,6 +38,10 @@ public class Room {
         return new Pair(a, b);
     }
     
+    /**
+     * Calculate the area of a room
+     * @return The area of the room
+     */
     public int area() {
         return w * h;
     }

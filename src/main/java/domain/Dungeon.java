@@ -35,6 +35,12 @@ public class Dungeon {
         tiles = new boolean[y][x];
     }
     
+    /**
+     * Check if a tile in the (X, Y) position is passable
+     * @param x The X-coordinate
+     * @param y The Y-coordinate
+     * @return True if the tile is floor, false if the tile is wall
+     */
     public boolean isPassable(int x, int y) {
         if (x >= 0 && x < this.x && y >= 0 && y < this.y) {
             return tiles[y][x];
@@ -43,6 +49,11 @@ public class Dungeon {
         return false;
     }
     
+    /**
+     * Return all the passable neighbour positions of a given location
+     * @param position The (X, Y) coordinate of the location inspected
+     * @return All the neighbouring positions that are considered passable
+     */
     public ArrayList<Pair<Integer, Integer>> getNeighbours(Pair<Integer, Integer> position) {
         int x = position.getFirst();
         int y = position.getSecond();
@@ -98,6 +109,17 @@ public class Dungeon {
         }
     }
     
+    /**
+     * Draws a tunnel between two points in the dungeon
+     * 
+     * <p>
+     * The tunnel creation algorithm creates L-shaped tunnels, where it first
+     * matches the X-coordinate of the two points and then the Y-coordinate.
+     * </p>
+     * 
+     * @param start An (X, Y) coordinate of the starting location
+     * @param target An (X, Y) coordinate of the target location
+     */
     public void carveTunnel(Pair<Integer, Integer> start, Pair<Integer, Integer> target) {
         int x = start.getFirst();
         int y = start.getSecond();

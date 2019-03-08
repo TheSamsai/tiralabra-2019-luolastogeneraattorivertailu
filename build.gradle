@@ -1,3 +1,7 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.1'
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: "jacoco"
@@ -45,4 +49,17 @@ test {
 
 run{
     standardInput = System.in
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'app.Main'
+        )
+    }
 }

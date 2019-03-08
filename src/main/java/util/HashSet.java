@@ -27,14 +27,23 @@ public class HashSet<T> implements Iterable {
     /**
      * Generate an index value from a given element's hashcode
      * @param element An object that implements a hashCode() function
-     * @return An index between 0 and array capacity
+     * @return A valid index between 0 and capacity, -1 if table is full
      */
-    public int hashIndex(T element) {
-        int index = element.hashCode() % capacity;
+    public int findIndex(T element) {
+        int hash = element.hashCode() % capacity;
         
-        if (index < 0) index *= -1;
+        if (hash < 0) hash *= -1;
         
-        return index;
+        int index = hash;
+        
+        for (int attempt = 0; attempt < capacity; attempt++) {
+            index = (hash + (attempt * attempt)) % capacity;
+            
+            if (list[index] == null) return index;
+            if (list[index].equals(element)) return index;
+        }
+        
+        return -1;
     }
     
     /**
@@ -42,25 +51,12 @@ public class HashSet<T> implements Iterable {
      * @param element The element to be added to the set
      */
     public void add(T element) {
-        int hash = hashIndex(element);
+        int index = findIndex(element);
         
-        int attempt = 1;
-        
-        int index = hash;
-        
-        // Use quadratic probing to find the next empty index
-        // Stop if an element equal to the one being added is found
-        while (index < capacity && list[index] != null && !element.equals(list[index])) {
-            
-            index = hash + attempt * attempt;
-            
-            attempt++;
-            
-            if (index >= capacity) {
-                rehash();
-                add(element);
-                return;
-            }
+        if (index < 0) {
+            rehash();
+            add(element);
+            return;
         }
         
         // Add item to the bucket at given index and increase size counter
@@ -85,7 +81,7 @@ public class HashSet<T> implements Iterable {
         capacity = capacity * 4;
         size = 0;
         
-        // Iterate over each bucket in the list and rehash them on the new list
+        // Iterate over each index in the old array and rehash them onto the new array
         for (int i = 0; i < oldSet.length; i++) {
             if (oldSet[i] != null) {
                 add((T) oldSet[i]);
@@ -99,25 +95,12 @@ public class HashSet<T> implements Iterable {
      * @return The element, if part of the set, null otherwise
      */
     public T get(T element) {
-        int hash = hashIndex(element);
+        int index = findIndex(element);
         
-        int attempt = 1;
-        int index = hash;
-        
-        // We need to also do quadratic probing here in order to find the element
-        while (index < capacity && list[index] != null && !element.equals((T) list[index])) {
-            index = hash + attempt * attempt;
-            attempt++;
-        }
-        
-        // If the index is within bounds, the index will contain either our value
-        // or a null, either will do
-        if (index < capacity) {
-            return (T) list[index];
-        }
+        if (index < 0) return null;
         
         // If we exceed capacity, the set didn't contain our value
-        return null;
+        return (T) list[index];
     }
     
     /**
@@ -125,22 +108,12 @@ public class HashSet<T> implements Iterable {
      * @param element 
      */
     public void remove(T element) {
-        int hash = hashIndex(element);
+        int index = findIndex(element);
         
-        int attempt = 1;
-        int index = hash;
+        if (index < 0) return;
         
-        // Quadratic probing
-        while (index < capacity && list[index] != null && !element.equals((T) list[index])) {
-            index = hash + attempt * attempt;
-            
-            attempt++;
-        }   
-        
-        if (index < capacity) {
-            list[index] = null;
-            size--;
-        }
+        list[index] = null;
+        size--;
     }
     
     /**
@@ -159,8 +132,9 @@ public class HashSet<T> implements Iterable {
     public boolean contains(T element) {
         T result = get(element);
         
-        if (result != null) return true;
-        else return false;
+        if (result == null) return false;
+        
+        return result.equals(element);
     }
     
     /**
@@ -184,7 +158,7 @@ public class HashSet<T> implements Iterable {
 
     /**
      * Create an iterator to allow "for (x : y)" iteration syntax
-     * @return An iterator over the current ArrayList
+     * @return An iterator over the elements in the HashSet
      */
     @Override
     public Iterator<T> iterator() {

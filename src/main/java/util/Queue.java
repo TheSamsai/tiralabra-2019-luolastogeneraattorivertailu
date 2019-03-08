@@ -56,10 +56,18 @@ public class Queue<A> {
         return node.getContents();
     }
     
+    /**
+     * Get the number of elements in the queue
+     * @return The number of elements in the queue
+     */
     public int getSize() {
         return size;
     }
-
+    
+    /**
+     * Test if the queue is empty
+     * @return True if empty, false otherwise
+     */
     public boolean isEmpty() {
         return size == 0;
     }

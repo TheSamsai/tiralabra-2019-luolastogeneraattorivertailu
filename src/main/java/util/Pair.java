@@ -8,7 +8,7 @@ package util;
 import java.util.Objects;
 
 /**
- *
+ * Class which stores two objects
  * @author sami
  */
 public class Pair<A, B> {

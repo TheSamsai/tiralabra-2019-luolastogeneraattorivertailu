@@ -4,6 +4,7 @@
 
 Ohjelman osien oikeellisuus on toteutettu JUnit-yksikkötesteillä. Jokaista ei-triviaalia luokkaa kohti on tehty
 testausluokka, joka sisältää yksikkötestejä luokan yleisiin käyttötilanteisiin ja vaatimuksiin perustuen.
+Sovelluksen pääluokka on jätetty yksikkötestauksen ulkopuolelle, eikä sitä huomioida testikattavuudessa.
 
 Kaikki JUnit-testit on ajettavissa komennolla "./gradlew test". Testikattavuusraportin voi tarvittaessa
 generoida komennolla "./gradlew jacocoTestReport".
@@ -42,6 +43,13 @@ Generointi käyttää syötteenä pseudosatunnaislukugeneraattoria, joka alustet
 Aputietorakenteilla on myös suorituskykytestejä, jotka vertaavat tietorakenteiden suorituskykyä Javan standardikirjaston
 tietorakenteisiin. Nämä testit on toteutettu JUnit testeinä ja ne ajetaan muiden yksikkötestien kanssa komennolla
 "./gradlew test".
+
+Suorituskykytestauksessa havaittiin, että toteutettu HashSet on nopeampi kuin Javan standardikirjaston toteutus
+lisäyksissä, mutta hitaampi hauissa. Erityisesti satunnaisissa hauissa, joissa elementit eivät kuulu settiin,
+HashSet toteutus on huomattavasti hitaampi.
+
+ArrayList-toteutus on hieman hitaampi kuin standardikirjaston toteutus lisäyksissä, mutta on melko lähellä
+standardikirjaston toteutuksen tehokkuutta.
 
 Dokumentoinnin ohessa on kaaviot generaattoreiden suorituskyvystä suhteessa pyydetyn luolaston kokoon. Tämä
 testaus toteutettiin omalla pöytäkoneella, joka on varustettu Ryzen 7 1700 prosessorilla (3.7 GHz) ja 2133 MHz 
